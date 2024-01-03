@@ -131,7 +131,7 @@ def scrape_data():
                 'board_phone': board_phone,
                 'board_email': board_email,
                 'agency_affiliation': agency_affiliation,
-                'agency_url': agency_url
+                'agency_website': agency_url
             }
 
             picture, details = row.find_all('td')
@@ -178,10 +178,27 @@ def scrape_data():
 
 
 def write_csv(data, filepath):
+
+    headers = [
+        'board_name',
+        'agency_affiliation',
+        'name',
+        'position',
+        'city',
+        'term_end',
+        'party',
+        'picture_url',
+        'bio',
+        'board_website',
+        'board_phone',
+        'board_email',
+        'agency_website'
+    ]
+
     with open(filepath, 'w', newline='', encoding='utf-8') as outfile:
         writer = csv.DictWriter(
             outfile,
-            fieldnames=data[0].keys()
+            fieldnames=headers
         )
 
         writer.writeheader()
