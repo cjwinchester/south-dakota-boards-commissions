@@ -174,6 +174,13 @@ def scrape_data():
 
             data.append(d)
 
+    data.sort(
+        key=lambda x: (
+            x['board_name'],
+            x['name'],
+        )
+    )
+
     return data
 
 
