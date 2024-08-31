@@ -13,7 +13,7 @@ REQUEST_HEADERS = {
 }
 
 HTML_DIR = 'member_pages'
-CSV_FILE = 'sd-boards-and-commission-members.csv'
+CSV_FILE = 'south-dakota-boards-and-commission-members.csv'
 
 
 def get_board_ids():
