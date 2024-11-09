@@ -1,8 +1,8 @@
-import os
 from glob import glob
 import time
 from datetime import datetime
 import csv
+from pathlib import Path
 
 import requests
 from bs4 import BeautifulSoup
@@ -12,7 +12,8 @@ REQUEST_HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36'  # noqa
 }
 
-HTML_DIR = 'member_pages'
+HTML_DIR = Path('member_pages')
+
 CSV_FILE = 'south-dakota-boards-and-commission-members.csv'
 
 
@@ -25,20 +26,12 @@ def get_board_ids():
     soup = BeautifulSoup(r.text, 'html.parser')
     table = soup.find('table', {'id': 'gvResults'})
 
-    ids = [int(x.get('href', '').split('=')[-1]) for x in table.find_all('a')]
-
-    return ids
+    return [int(x.get('href', '').split('=')[-1]) for x in table.find_all('a')]
 
 
 def download_member_pages(board_ids):
     for board_id in board_ids:
-        filepath = os.path.join(
-            HTML_DIR,
-            f'{board_id}.html'
-        )
-
-        if os.path.exists(filepath):
-            continue
+        filepath = HTML_DIR / f'{board_id}.html'
 
         url = f'https://boardsandcommissions.sd.gov/boardmembers.aspx?BoardID={board_id}'  # noqa
 
@@ -66,7 +59,7 @@ def scrape_data():
         'party': 'lblParty'
     }
 
-    files = glob(f'{HTML_DIR}/*.html')
+    files = HTML_DIR.glob('*.html')
 
     for file in files:
 
